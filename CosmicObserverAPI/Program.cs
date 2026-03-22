@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using CosmicObserverAPI.Data;
+using CosmicObserverAPI.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,10 @@ builder.Services.AddControllers();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+// Bind NASA API options to the dependency injection service container
+builder.Services.Configure<NasaApiOptions>(
+    builder.Configuration.GetSection(NasaApiOptions.SectionName));
 
 var app = builder.Build();
 
