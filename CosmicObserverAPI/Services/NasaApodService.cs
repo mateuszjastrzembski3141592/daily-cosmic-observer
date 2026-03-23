@@ -1,4 +1,5 @@
 ﻿using CosmicObserverAPI.Configuration;
+using CosmicObserverAPI.DTOs;
 using CosmicObserverAPI.Interfaces;
 using Microsoft.Extensions.Options;
 
@@ -18,6 +19,8 @@ public class NasaApodService : INasaApodService
         _apiKey = string.IsNullOrWhiteSpace(options.Value.ApiKey) ? "DEMO_KEY" : options.Value.ApiKey;
     }
 
-    public async Task<string?> GetApodJson() =>
-        await _httpClient.GetStringAsync($"planetary/apod?api_key={_apiKey}");
+    public async Task<NasaApodResponse?> GetTodayApodAsync()
+    {
+        return await _httpClient.GetFromJsonAsync<NasaApodResponse>($"planetary/apod?api_key={_apiKey}");
+    }
 }

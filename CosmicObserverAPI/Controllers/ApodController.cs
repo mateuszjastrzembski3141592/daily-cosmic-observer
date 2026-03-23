@@ -1,4 +1,5 @@
-﻿using CosmicObserverAPI.Interfaces;
+﻿using CosmicObserverAPI.DTOs;
+using CosmicObserverAPI.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CosmicObserverAPI.Controllers;
@@ -15,15 +16,15 @@ public class ApodController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<string>> GetJsonString()
+    public async Task<ActionResult<NasaApodResponse>> GetTodayApod()
     {
-        var jsonString = await _service.GetApodJson();
+        var apodResult = await _service.GetTodayApodAsync();
 
-        if (jsonString == null)
+        if (apodResult == null)
         {
             return NotFound();
         }
 
-        return jsonString;
+        return apodResult;
     }
 }
