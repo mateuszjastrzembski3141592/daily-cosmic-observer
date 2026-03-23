@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using CosmicObserverAPI.Data;
+using CosmicObserverAPI.Configuration;
+using CosmicObserverAPI.Services;
+using CosmicObserverAPI.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,8 +16,14 @@ builder.Services.AddDbContext<CosmicDbContext>(options => options.UseSqlite(conn
 // Add services to the container.
 builder.Services.AddControllers();
 
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+// Bind NASA API options to the dependency injection service container
+builder.Services.Configure<NasaApiOptions>(
+    builder.Configuration.GetSection(NasaApiOptions.SectionName));
+
+// Register the typed HttpClient and map INasaApodService to its implementation
+builder.Services.AddHttpClient<INasaApodService, NasaApodService>();
 
 var app = builder.Build();
 
