@@ -15,7 +15,7 @@ public class NasaApodService : INasaApodService
 
         _httpClient.BaseAddress = new Uri("https://api.nasa.gov");
 
-        _apiKey = options.Value.ApiKey;
+        _apiKey = string.IsNullOrWhiteSpace(options.Value.ApiKey) ? "DEMO_KEY" : options.Value.ApiKey;
     }
 
     public async Task<string?> GetApodJson() =>
