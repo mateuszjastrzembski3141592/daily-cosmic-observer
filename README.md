@@ -1,2 +1,42 @@
 # daily-cosmic-observer
-A full-stack astrophysics journal built with .NET 10 and C# 14, integrating NASA's APOD API for daily space observation tracking.
+DailyCosmicObserver (DCO): an upcoming full-stack web application designed to act as a digital astronomy journal that automatically fetches data from the **NASA Astronomy Picture of the Day (APOD) API**, allowing users to browse the APOD events, write personal logs, and organize those logs using custom tags.
+
+## Status
+Work in progress (Phase 1)
+
+## Project Roadmap
+The development of the DCO project is divided into two distinct phases:
+- **Phase 1: RESTful Backend API:** building a robust `CosmicObserver API` with N-Tier architecture using .NET 10 to handle external API integrations, data management and business logic,
+- **Phase 2: Frontend Web Client:** developing the UI to consume the `CosmicObserver API`, visualize the data (including cosmic events images), and provide a journal-like experience for the user.
+
+## Backend Tech Stack (Phase 1)
+- **Framework:** .NET 10 (ASP.NET Core Web API)
+- **Language:** C# 14
+- **Database:** SQLite
+- **ORM:** Entity Framework Core (Code-First)
+- **Architecture:** Clean N-Tier REST API
+- **Design Tools:** dbdiagram.io (Database Schema Architecture)
+
+## Progress & Milestones
+DCO's Phase 1 is under development. Here is a list of what has been accomplished so far:
+
+### 1. Database Schema
+The database schema was designed using the `dbdiagram.io`. The schema consists of:
+- a many-to-one relationship between `cosmic_logs` and `cosmic_events`,
+- a many-to-many relationship between `cosmic_logs` and `cosmic_tags` (utilizing `log_tags` join table).
+
+### 2. The Data Layer (EF Core)
+- **Domain Models:** designed and implemented pure data containers (`CosmicEvent`, `CosmicLog`, `CosmicTag`) with strict `required` modifiers for null-safety.
+- **Database Schema:** translated the initial `dbdiagram` schema into a local SQLite database using EF Core Code-First migrations.
+- **Relational Mapping:** configured one-to-many and many-to-many relationships (including auto-generated join tables for `Logs` and `Tags`).
+
+### 3. External API Integration (NASA APOD)
+- **Secure HTTP Pipeline:** wired up a typed `HttpClient` utilizing Dependency Injection to communicate with NASA's servers.
+- **Data Decoupling (DTOs):** implemented the `NasaApodResponse` Data Transfer Object to safely deserialize NASA's JSON into C# properties.
+- **API Security:** integrated the .NET Secret Manager (`NasaApiOptions`) to ensure private API keys remain securely out of source control.
+- **Routing:** established the initial `ApodController` exposing a `[HttpGet]` endpoint (`api/Apod`) to serve formatted daily picture data.
+
+## Upcoming
+- Map the incoming NASA DTOs to the `CosmicEvent` db entities for a permanent local storage of daily APOD entries.
+- Implement CRUD endpoints for user `CosmicLogs` and `CosmicTags`.
+- Fully test the backend pipeline using Swagger / Postman before initiating Phase 2.
