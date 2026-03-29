@@ -3,6 +3,7 @@ using System;
 using CosmicObserverAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CosmicObserverAPI.Migrations
 {
     [DbContext(typeof(CosmicDbContext))]
-    partial class CosmicDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260329193821_UpdateEventDateToDateOnly")]
+    partial class UpdateEventDateToDateOnly
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.5");
