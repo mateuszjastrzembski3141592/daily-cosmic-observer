@@ -419,3 +419,5 @@ FodyWeavers.xsd
 
 # Custom files and directories
 *.db
+*.db-shm
+*.db-wal

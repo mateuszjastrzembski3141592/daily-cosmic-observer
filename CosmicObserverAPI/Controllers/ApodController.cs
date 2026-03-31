@@ -8,22 +8,26 @@ namespace CosmicObserverAPI.Controllers;
 [ApiController]
 public class ApodController : ControllerBase
 {
-    private readonly INasaApodService _service;
+    private readonly INasaApodService _apodService;
+    private readonly ICosmicEventService _eventService;
 
-    public ApodController(INasaApodService service)
+    public ApodController(INasaApodService apodService, ICosmicEventService eventService)
     {
-        _service = service;
+        _apodService = apodService;
+        _eventService = eventService;
     }
 
     [HttpGet]
     public async Task<ActionResult<NasaApodResponse>> GetTodayApod()
     {
-        var apodResult = await _service.GetTodayApodAsync();
+        var apodResult = await _apodService.GetTodayApodAsync();
 
         if (apodResult == null)
         {
             return NotFound();
         }
+
+        await _eventService.SaveTodayApodAsync(apodResult);
 
         return apodResult;
     }
