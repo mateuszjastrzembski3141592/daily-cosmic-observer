@@ -4,5 +4,5 @@ namespace CosmicObserverAPI.Interfaces;
 
 public interface ICosmicEventService
 {
-    Task<bool> SaveTodayApodAsync(NasaApodResponse todayResponse);
+    Task<bool> SaveApodAsync(NasaApodResponse todayResponse);
 }

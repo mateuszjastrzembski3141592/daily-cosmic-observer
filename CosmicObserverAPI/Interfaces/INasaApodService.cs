@@ -4,5 +4,5 @@ namespace CosmicObserverAPI.Interfaces;
 
 public interface INasaApodService
 {
-    Task<NasaApodResponse?> GetTodayApodAsync();
+    Task<NasaApodResponse?> GetApodAsync(DateOnly? date);
 }

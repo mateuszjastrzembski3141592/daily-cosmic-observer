@@ -19,8 +19,15 @@ public class NasaApodService : INasaApodService
         _apiKey = string.IsNullOrWhiteSpace(options.Value.ApiKey) ? "DEMO_KEY" : options.Value.ApiKey;
     }
 
-    public async Task<NasaApodResponse?> GetTodayApodAsync()
+    public async Task<NasaApodResponse?> GetApodAsync(DateOnly? date)
     {
-        return await _httpClient.GetFromJsonAsync<NasaApodResponse>($"planetary/apod?api_key={_apiKey}");
+        string queryUrl = $"planetary/apod?api_key={_apiKey}";
+
+        if (date is DateOnly d) 
+        {
+            queryUrl += $"&date={d:yyyy-MM-dd}";
+        }
+
+        return await _httpClient.GetFromJsonAsync<NasaApodResponse>(queryUrl);
     }
 }

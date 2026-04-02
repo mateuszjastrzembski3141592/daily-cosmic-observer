@@ -15,7 +15,7 @@ public class CosmicEventService : ICosmicEventService
         _cosmicDbContext = cosmicDbContext;
     }
 
-    public async Task<bool> SaveTodayApodAsync(NasaApodResponse todayResponse)
+    public async Task<bool> SaveApodAsync(NasaApodResponse todayResponse)
     {
         var db = _cosmicDbContext.CosmicEvents;
 
