@@ -15,25 +15,55 @@ public class CosmicEventService : ICosmicEventService
         _cosmicDbContext = cosmicDbContext;
     }
 
-    public async Task<bool> SaveApodAsync(NasaApodResponse todayResponse)
+    public async Task<bool> SaveApodAsync(NasaApodResponse apodResponse)
     {
         var db = _cosmicDbContext.CosmicEvents;
 
-        if (await db.AnyAsync(e => e.Date == todayResponse.Date))
+        if (await db.AnyAsync(ce => ce.Date == apodResponse.Date))
         {
             return false;
         }
 
-        var todayCosmicEvent = new CosmicEvent()
+        var cosmicEvent = new CosmicEvent()
         {
-            Title = todayResponse.Title,
-            Description = todayResponse.Description,
-            Date = todayResponse.Date,
-            ImageUrl = todayResponse.ImageUrl,
-            SourceUrl = $"https://apod.nasa.gov/apod/ap{todayResponse.Date:yyMMdd}.html"
+            Title = apodResponse.Title,
+            Description = apodResponse.Description,
+            Date = apodResponse.Date,
+            ImageUrl = apodResponse.ImageUrl,
+            SourceUrl = $"https://apod.nasa.gov/apod/ap{apodResponse.Date:yyMMdd}.html"
         };
 
-        db.Add(todayCosmicEvent);
+        db.Add(cosmicEvent);
+        await _cosmicDbContext.SaveChangesAsync();
+
+        return true;
+    }
+
+    public async Task<bool> SaveApodRangeAsync(IEnumerable<NasaApodResponse> apodResponses)
+    {
+        var db = _cosmicDbContext.CosmicEvents;
+
+        var dates = apodResponses
+            .Select(nar => nar.Date)
+            .ToList();
+
+        var existingDates = await db
+            .Where(ce => dates.Contains(ce.Date))
+            .Select(ce => ce.Date)
+            .ToListAsync();
+
+        var filteredApods = apodResponses
+            .Where(nar => !existingDates.Contains(nar.Date))
+            .Select(nar => new CosmicEvent()
+            {
+                Title = nar.Title,
+                Description = nar.Description,
+                Date = nar.Date,
+                ImageUrl = nar.ImageUrl,
+                SourceUrl = $"https://apod.nasa.gov/apod/ap{nar.Date:yyMMdd}.html"
+            });
+
+        await db.AddRangeAsync(filteredApods);
         await _cosmicDbContext.SaveChangesAsync();
 
         return true;

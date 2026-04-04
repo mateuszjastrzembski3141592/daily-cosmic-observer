@@ -30,4 +30,16 @@ public class NasaApodService : INasaApodService
 
         return await _httpClient.GetFromJsonAsync<NasaApodResponse>(queryUrl);
     }
+
+    public async Task<IEnumerable<NasaApodResponse>> GetApodRangeAsync(DateOnly startDate, DateOnly? endDate)
+    {
+        string queryUrl = $"planetary/apod?api_key={_apiKey}&start_date={startDate:yyyy-MM-dd}";
+
+        if (endDate is DateOnly d)
+        {
+            queryUrl += $"&end_date={d:yyyy-MM-dd}";
+        }
+
+        return await _httpClient.GetFromJsonAsync<IEnumerable<NasaApodResponse>>(queryUrl) ?? [];
+    }
 }
