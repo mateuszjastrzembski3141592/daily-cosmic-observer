@@ -18,17 +18,32 @@ public class ApodController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<NasaApodResponse>> GetTodayApod()
+    public async Task<ActionResult<NasaApodResponse>> GetApod([FromQuery] DateOnly? date)
     {
-        var apodResult = await _apodService.GetTodayApodAsync();
+        var apodResult = await _apodService.GetApodAsync(date);
 
         if (apodResult == null)
         {
             return NotFound();
         }
 
-        await _eventService.SaveTodayApodAsync(apodResult);
+        await _eventService.SaveApodAsync(apodResult);
 
-        return apodResult;
+        return Ok(apodResult);
+    }
+
+    [HttpGet("range")]
+    public async Task<ActionResult<IEnumerable<NasaApodResponse>>> GetApodRange([FromQuery] DateOnly startDate, DateOnly? endDate)
+    {
+        var apodResults = await _apodService.GetApodRangeAsync(startDate, endDate);
+
+        if (!apodResults.Any())
+        {
+            return NotFound();
+        }
+
+        await _eventService.SaveApodRangeAsync(apodResults);
+
+        return Ok(apodResults);
     }
 }
