@@ -36,7 +36,12 @@ The database schema was designed using the `dbdiagram.io`. The schema consists o
 - **API Security:** integrated the .NET Secret Manager (`NasaApiOptions`) to ensure private API keys remain securely out of source control.
 - **Routing:** established the initial `ApodController` exposing a `[HttpGet]` endpoint (`api/Apod`) to serve formatted daily picture data.
 
+### 4. Data Pipeline (APOD to EF Core)
+- **Fetching Pipelines:** Updated the data layer to support retrieving individual daily records or bulk collections across specific date ranges (`IEnumerable<NasaApodResponse>`).
+- **Automated Database Mapping:** Configured the pipeline to automatically translate and map incoming NASA DTOs into permanent `CosmicEvent` database entities.
+- **Advanced Data Integrity:** Implemented bulk duplicate-checking mechanism. By utilizing Entity Framework queries and **LINQ**, the system safely filters and saves incoming array responses.
+- **Routing:** Updated the `ApodController` to handle both standard `[HttpGet]` requests for specific dates and a dedicated `[HttpGet("range")]` endpoint for bulk data synchronization.
+
 ## Upcoming
-- Map the incoming NASA DTOs to the `CosmicEvent` db entities for a permanent local storage of daily APOD entries.
 - Implement CRUD endpoints for user `CosmicLogs` and `CosmicTags`.
 - Fully test the backend pipeline using Swagger / Postman before initiating Phase 2.
