@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace CosmicObserverAPI.DTOs;
+namespace CosmicObserverAPI.DTOs.Apod;
 
 public class NasaApodResponse
 {

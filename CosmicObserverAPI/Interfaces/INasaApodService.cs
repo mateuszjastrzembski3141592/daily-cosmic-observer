@@ -1,4 +1,4 @@
-﻿using CosmicObserverAPI.DTOs;
+﻿using CosmicObserverAPI.DTOs.Apod;
 
 namespace CosmicObserverAPI.Interfaces;
 

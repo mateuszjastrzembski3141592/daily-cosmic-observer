@@ -1,5 +1,5 @@
 ﻿using CosmicObserverAPI.Data;
-using CosmicObserverAPI.DTOs;
+using CosmicObserverAPI.DTOs.Apod;
 using CosmicObserverAPI.Interfaces;
 using CosmicObserverAPI.Models;
 using Microsoft.EntityFrameworkCore;
