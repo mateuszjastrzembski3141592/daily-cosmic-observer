@@ -1,5 +1,5 @@
 ﻿using CosmicObserverAPI.Configuration;
-using CosmicObserverAPI.DTOs;
+using CosmicObserverAPI.DTOs.Apod;
 using CosmicObserverAPI.Interfaces;
 using Microsoft.Extensions.Options;
 

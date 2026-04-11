@@ -45,3 +45,7 @@ The database schema was designed using the `dbdiagram.io`. The schema consists o
 ## Upcoming
 - Implement CRUD endpoints for user `CosmicLogs` and `CosmicTags`.
 - Fully test the backend pipeline using Swagger / Postman before initiating Phase 2.
+
+## Draft TODOs:
+- Create APOD gallery endpoint (get all apods from db and not from APOD API)
+- Implement cache-aside pattern for APODs

@@ -1,4 +1,4 @@
-﻿using CosmicObserverAPI.DTOs;
+﻿using CosmicObserverAPI.DTOs.Apod;
 using CosmicObserverAPI.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,6 +37,7 @@ public class ApodController : ControllerBase
     {
         var apodResults = await _apodService.GetApodRangeAsync(startDate, endDate);
 
+        // TODO: remove the if
         if (!apodResults.Any())
         {
             return NotFound();

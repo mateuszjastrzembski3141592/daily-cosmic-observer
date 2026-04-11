@@ -14,3 +14,35 @@ GET {{CosmicObserverAPI_HostAddress}}/api/Apod/range?startDate=2000-01-01&endDat
 Accept: application/json
 
 ###
+
+POST {{CosmicObserverAPI_HostAddress}}/api/Tags
+Content-Type: application/json
+
+{
+  "Name": "star"
+}
+
+###
+
+GET {{CosmicObserverAPI_HostAddress}}/api/Tags
+Accept: application/json
+
+###
+
+GET {{CosmicObserverAPI_HostAddress}}/api/Tags/3
+Accept: application/json
+
+###
+
+PUT {{CosmicObserverAPI_HostAddress}}/api/Tags/4
+Content-Type: application/json
+
+{
+  "Name": "asteroid"
+}
+
+###
+
+DELETE {{CosmicObserverAPI_HostAddress}}/api/Tags/3
+
+###
