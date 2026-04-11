@@ -33,7 +33,7 @@ public class TagController : ControllerBase
     {
         var tagResult = await _tagService.GetTagByIdAsync(id);
 
-        if (tagResult == null)
+        if (tagResult is null)
         {
             return NotFound();
         }
@@ -46,12 +46,25 @@ public class TagController : ControllerBase
     {
         var tagResult = await _tagService.CreateTagAsync(newTag);
 
-        if (tagResult == null)
+        if (tagResult is null)
         {
             return Conflict();
         }
 
         return CreatedAtAction(nameof(GetTagById), new { id = tagResult.Id }, tagResult);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult<TagResponse>> UpdateTag([FromBody] CreateTag newTag, [FromRoute] int id)
+    {
+        var tagResult = await _tagService.UpdateTagAsync(newTag, id);
+
+        if (tagResult is null)
+        {
+            return Conflict();
+        }
+
+        return Ok(tagResult);
     }
 
     [HttpDelete("{id}")]

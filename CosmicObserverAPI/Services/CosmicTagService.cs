@@ -73,6 +73,29 @@ public class CosmicTagService : ICosmicTagService
         return tag;
     }
 
+    public async Task<TagResponse?> UpdateTagAsync(CreateTag newTag, int id)
+    {
+        var db = _cosmicDbContext.CosmicTags;
+
+        var tag = await db
+            .FirstOrDefaultAsync(ct => ct.Id == id);
+
+        if (tag is null)
+        {
+            return null;
+        }
+
+        if (await db.AnyAsync(ct => ct.Name == newTag.Name && ct.Id != id))
+        {
+            return null;
+        }
+
+        tag.Name = newTag.Name;
+        await _cosmicDbContext.SaveChangesAsync();
+
+        return new TagResponse{ Id = tag.Id, Name = tag.Name };
+    }
+
     public async Task<bool> DeleteTagAsync(int id)
     {
         var db = _cosmicDbContext.CosmicTags;

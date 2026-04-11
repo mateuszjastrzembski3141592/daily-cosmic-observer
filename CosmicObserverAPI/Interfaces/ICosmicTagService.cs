@@ -10,7 +10,7 @@ public interface ICosmicTagService
 
     Task<TagResponse?> CreateTagAsync(CreateTag newTag);
 
-    //Task<TagResponse?> UpdateTagAsync(CreateTag newTag);
+    Task<TagResponse?> UpdateTagAsync(CreateTag newTag, int id);
 
     Task<bool> DeleteTagAsync(int id);
 }
