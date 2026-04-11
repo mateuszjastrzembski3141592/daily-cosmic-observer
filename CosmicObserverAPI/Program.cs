@@ -25,8 +25,10 @@ builder.Services.Configure<NasaApiOptions>(
 // Register the typed HttpClient and map INasaApodService to its implementation
 builder.Services.AddHttpClient<INasaApodService, NasaApodService>();
 
-// Register the scope for a service and map ICosmicEventService to its implementation
+// Register the scopes for services and map each interface with it's implementation
 builder.Services.AddScoped<ICosmicEventService, CosmicEventService>();
+
+builder.Services.AddScoped<ICosmicTagService, CosmicTagService>();
 
 var app = builder.Build();
 
