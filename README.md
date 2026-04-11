@@ -42,9 +42,15 @@ The database schema was designed using the `dbdiagram.io`. The schema consists o
 - **Advanced Data Integrity:** Implemented bulk duplicate-checking mechanism. By utilizing Entity Framework queries and **LINQ**, the system safely filters and saves incoming array responses.
 - **Routing:** Updated the `ApodController` to handle both standard `[HttpGet]` requests for specific dates and a dedicated `[HttpGet("range")]` endpoint for bulk data synchronization.
 
+### 5. Data Engine & Endpoints (`CosmicTags`)
+- **Data Transfer Objects (DTOs):** implemented `CreateTag` and `TagResponse` DTOs to shape HTTP payloads.
+- **Service Layer (EF Core):** built `CosmicTagService` to handle database interactions, utilizing Entity Framework's **Change Tracker** for optimized updates.
+- **RESTful Routing:** established `TagController` with a complete set of CRUD endpoints (`GET`, `POST`, `PUT`, `DELETE`) and HTTP status code handling.
+- **Data Integrity:** added validation logic to prevent duplicate tag creation and naming collisions.
+
 ## Upcoming
-- Implement CRUD endpoints for user `CosmicLogs` and `CosmicTags`.
-- Fully test the backend pipeline using Swagger / Postman before initiating Phase 2.
+- Implement CRUD endpoints for user `CosmicLogs`.
+- Fully test the backend pipeline using Swagger / `http` files before initiating Phase 2.
 
 ## Draft TODOs:
 - Create APOD gallery endpoint (get all apods from db and not from APOD API)
