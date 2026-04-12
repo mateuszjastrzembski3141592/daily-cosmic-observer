@@ -1,4 +1,4 @@
-﻿namespace CosmicObserverAPI.DTOs.Tags;
+﻿namespace CosmicObserverAPI.DTOs.CosmicTag;
 
 public class TagResponse
 {

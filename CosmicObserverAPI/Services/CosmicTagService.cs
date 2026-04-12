@@ -1,5 +1,5 @@
 ﻿using CosmicObserverAPI.Data;
-using CosmicObserverAPI.DTOs.Tags;
+using CosmicObserverAPI.DTOs.CosmicTag;
 using CosmicObserverAPI.Interfaces;
 using CosmicObserverAPI.Models;
 using Microsoft.EntityFrameworkCore;

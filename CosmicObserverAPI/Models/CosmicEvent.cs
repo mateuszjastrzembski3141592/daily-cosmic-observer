@@ -8,4 +8,5 @@ public class CosmicEvent
     public required DateOnly Date { get; set; }
     public required string ImageUrl { get; set; }
     public required string SourceUrl { get; set; }
+    public ICollection<CosmicLog> Logs { get; } = [];
 }
