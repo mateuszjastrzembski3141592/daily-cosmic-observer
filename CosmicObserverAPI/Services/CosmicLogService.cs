@@ -3,6 +3,7 @@ using CosmicObserverAPI.DTOs.CosmicLog;
 using CosmicObserverAPI.DTOs.CosmicTag;
 using CosmicObserverAPI.Enums;
 using CosmicObserverAPI.Interfaces;
+using CosmicObserverAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace CosmicObserverAPI.Services;
@@ -129,5 +130,65 @@ public class CosmicLogService : ICosmicLogService
             .ToListAsync();
 
         return logs;
+    }
+
+    public async Task<LogResponse?> CreateLogAsync(CreateLog newLog)
+    {
+        var db = _cosmicDbContext.CosmicLogs;
+        var dbTags = _cosmicDbContext.CosmicTags;
+
+        if (await db.AnyAsync(cl => cl.Title == newLog.Title))
+        {
+            return null;
+        }
+
+        var existingTags = await dbTags
+            .Where(ct => newLog.Tags.Contains(ct.Name))
+            .ToListAsync();
+
+        var existingTagNames = existingTags
+            .Select(ct => ct.Name)
+            .ToList();
+
+        var missingTags = newLog.Tags
+            .Except(existingTagNames)
+            .Select(s => new CosmicTag()
+            {
+                Name = s
+            })
+            .ToList();
+
+        var cosmicLog = new CosmicLog()
+        {
+            Title = newLog.Title,
+            Content = newLog.Content,
+            Category = newLog.Category,
+            CreatedAt = DateTime.Now,
+            CosmicEventId = newLog.CosmicEventId,
+            SourceUrl = newLog.SourceUrl,
+            Tags = [.. existingTags, .. missingTags]
+        };
+
+        db.Add(cosmicLog);
+        await _cosmicDbContext.SaveChangesAsync();
+
+        var log = new LogResponse()
+        {
+            Id = cosmicLog.Id,
+            Title = cosmicLog.Title,
+            Content = cosmicLog.Content,
+            Category = cosmicLog.Category,
+            CreatedAt = cosmicLog.CreatedAt,
+            CosmicEventId = cosmicLog.CosmicEventId,
+            SourceUrl = cosmicLog.SourceUrl,
+            Tags = [.. cosmicLog.Tags
+                .Select(ct => new TagResponse()
+                {
+                    Id = ct.Id,
+                    Name = ct.Name
+                })]
+        };
+
+        return log;
     }
 }
