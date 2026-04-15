@@ -20,7 +20,6 @@ public class CosmicTagService : ICosmicTagService
         var db = _cosmicDbContext.CosmicTags;
 
         var tags = await db
-            .AsNoTracking()
             .Select(ct => new TagResponse()
             {
                 Id = ct.Id,
