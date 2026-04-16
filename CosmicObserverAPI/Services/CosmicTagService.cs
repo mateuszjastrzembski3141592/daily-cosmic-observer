@@ -76,8 +76,7 @@ public class CosmicTagService : ICosmicTagService
     {
         var db = _cosmicDbContext.CosmicTags;
 
-        var tag = await db
-            .FirstOrDefaultAsync(ct => ct.Id == id);
+        var tag = await db.FirstOrDefaultAsync(ct => ct.Id == id);
 
         if (tag is null)
         {

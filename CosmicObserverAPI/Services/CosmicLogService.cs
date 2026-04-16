@@ -2,6 +2,7 @@
 using CosmicObserverAPI.DTOs.CosmicLog;
 using CosmicObserverAPI.DTOs.CosmicTag;
 using CosmicObserverAPI.Enums;
+using CosmicObserverAPI.Extensions;
 using CosmicObserverAPI.Interfaces;
 using CosmicObserverAPI.Models;
 using Microsoft.EntityFrameworkCore;
@@ -22,23 +23,7 @@ public class CosmicLogService : ICosmicLogService
         var db = _cosmicDbContext.CosmicLogs;
 
         var logs = await db
-            .Select(cl => new LogResponse()
-            {
-                Id = cl.Id,
-                Title = cl.Title,
-                Content = cl.Content,
-                Category = cl.Category,
-                CreatedAt = cl.CreatedAt,
-                CosmicEventId = cl.CosmicEventId,
-                SourceUrl = cl.SourceUrl,
-                Tags = cl.Tags
-                    .Select(ct => new TagResponse()
-                    {
-                        Id = ct.Id,
-                        Name = ct.Name
-                    })
-                    .ToList()
-            })
+            .Select(LogMappingExtensions.ToLogResponseExpression)
             .ToListAsync();
 
         return logs;
@@ -50,23 +35,7 @@ public class CosmicLogService : ICosmicLogService
 
         var log = await db
             .Where(cl => cl.Id == id)
-            .Select(cl => new LogResponse()
-            {
-                Id = cl.Id,
-                Title = cl.Title,
-                Content = cl.Content,
-                Category = cl.Category,
-                CreatedAt = cl.CreatedAt,
-                CosmicEventId = cl.CosmicEventId,
-                SourceUrl = cl.SourceUrl,
-                Tags = cl.Tags
-                    .Select(ct => new TagResponse()
-                    {
-                        Id = ct.Id,
-                        Name = ct.Name
-                    })
-                    .ToList()
-            })
+            .Select(LogMappingExtensions.ToLogResponseExpression)
             .FirstOrDefaultAsync();
 
         return log;
@@ -82,23 +51,7 @@ public class CosmicLogService : ICosmicLogService
 
         var logs = await db
             .Where(cl => categoryList.Contains(cl.Category))
-            .Select(cl => new LogResponse()
-            {
-                Id = cl.Id,
-                Title = cl.Title,
-                Content = cl.Content,
-                Category = cl.Category,
-                CreatedAt = cl.CreatedAt,
-                CosmicEventId = cl.CosmicEventId,
-                SourceUrl = cl.SourceUrl,
-                Tags = cl.Tags
-                    .Select(ct => new TagResponse()
-                    {
-                        Id = ct.Id,
-                        Name = ct.Name
-                    })
-                    .ToList()
-            })
+            .Select(LogMappingExtensions.ToLogResponseExpression)
             .ToListAsync();
 
         return logs;
@@ -110,23 +63,7 @@ public class CosmicLogService : ICosmicLogService
 
         var logs = await db
             .Where(cl => cl.Tags.Any(ct => tags.Contains(ct.Name)))
-            .Select(cl => new LogResponse()
-            {
-                Id = cl.Id,
-                Title = cl.Title,
-                Content = cl.Content,
-                Category = cl.Category,
-                CreatedAt = cl.CreatedAt,
-                CosmicEventId = cl.CosmicEventId,
-                SourceUrl = cl.SourceUrl,
-                Tags = cl.Tags
-                    .Select(ct => new TagResponse()
-                    {
-                        Id = ct.Id,
-                        Name = ct.Name
-                    })
-                    .ToList()
-            })
+            .Select(LogMappingExtensions.ToLogResponseExpression)
             .ToListAsync();
 
         return logs;
@@ -135,28 +72,11 @@ public class CosmicLogService : ICosmicLogService
     public async Task<LogResponse?> CreateLogAsync(CreateLog newLog)
     {
         var db = _cosmicDbContext.CosmicLogs;
-        var dbTags = _cosmicDbContext.CosmicTags;
 
         if (await db.AnyAsync(cl => cl.Title == newLog.Title))
         {
             return null;
         }
-
-        var existingTags = await dbTags
-            .Where(ct => newLog.Tags.Contains(ct.Name))
-            .ToListAsync();
-
-        var existingTagNames = existingTags
-            .Select(ct => ct.Name)
-            .ToList();
-
-        var missingTags = newLog.Tags
-            .Except(existingTagNames)
-            .Select(s => new CosmicTag()
-            {
-                Name = s
-            })
-            .ToList();
 
         var cosmicLog = new CosmicLog()
         {
@@ -166,29 +86,84 @@ public class CosmicLogService : ICosmicLogService
             CreatedAt = DateTime.Now,
             CosmicEventId = newLog.CosmicEventId,
             SourceUrl = newLog.SourceUrl,
-            Tags = [.. existingTags, .. missingTags]
+            Tags = await GetOrCreateTagsAsync(newLog.Tags)
         };
 
         db.Add(cosmicLog);
         await _cosmicDbContext.SaveChangesAsync();
 
-        var log = new LogResponse()
-        {
-            Id = cosmicLog.Id,
-            Title = cosmicLog.Title,
-            Content = cosmicLog.Content,
-            Category = cosmicLog.Category,
-            CreatedAt = cosmicLog.CreatedAt,
-            CosmicEventId = cosmicLog.CosmicEventId,
-            SourceUrl = cosmicLog.SourceUrl,
-            Tags = [.. cosmicLog.Tags
-                .Select(ct => new TagResponse()
-                {
-                    Id = ct.Id,
-                    Name = ct.Name
-                })]
-        };
+        var log = cosmicLog.ToLogResponse();
 
         return log;
+    }
+
+    public async Task<LogResponse?> UpdateLogAsync(CreateLog newLog, int id)
+    {
+        var db = _cosmicDbContext.CosmicLogs;
+
+        var cosmicLog = await db.Include(cl => cl.Tags).FirstOrDefaultAsync(cl => cl.Id == id);
+
+        if (cosmicLog is null)
+        {
+            return null;
+        }
+
+        if (await db.AnyAsync(cl => cl.Title == newLog.Title && cl.Id != id))
+        {
+            return null;
+        }
+
+        cosmicLog.Title = newLog.Title;
+        cosmicLog.Content = newLog.Content;
+        cosmicLog.Category = newLog.Category;
+        cosmicLog.CosmicEventId = newLog.CosmicEventId;
+        cosmicLog.SourceUrl = newLog.SourceUrl;
+        cosmicLog.Tags = await GetOrCreateTagsAsync(newLog.Tags);
+
+        await _cosmicDbContext.SaveChangesAsync();
+
+        var log = cosmicLog.ToLogResponse();
+
+        return log;
+    }
+
+    public async Task<bool> DeleteLogAsync(int id)
+    {
+        var db = _cosmicDbContext.CosmicLogs;
+
+        var log = await db.FindAsync(id);
+
+        if (log is null)
+        {
+            return false;
+        }
+
+        db.Remove(log);
+        await _cosmicDbContext.SaveChangesAsync();
+
+        return true;
+    }
+
+    private async Task<List<CosmicTag>> GetOrCreateTagsAsync(IEnumerable<string> newTags)
+    {
+        var dbTags = _cosmicDbContext.CosmicTags;
+
+        var existingTags = await dbTags
+            .Where(ct => newTags.Contains(ct.Name))
+            .ToListAsync();
+
+        var existingTagNames = existingTags
+            .Select(ct => ct.Name)
+            .ToList();
+
+        var missingTags = newTags
+            .Except(existingTagNames)
+            .Select(s => new CosmicTag()
+            {
+                Name = s
+            })
+            .ToList();
+
+        return [.. existingTags, .. missingTags];
     }
 }
