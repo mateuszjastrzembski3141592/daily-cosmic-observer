@@ -1,4 +1,4 @@
-﻿using CosmicObserverAPI.DTOs.Tags;
+﻿using CosmicObserverAPI.DTOs.CosmicTag;
 
 namespace CosmicObserverAPI.Interfaces;
 

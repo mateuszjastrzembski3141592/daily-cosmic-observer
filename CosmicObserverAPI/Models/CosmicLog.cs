@@ -8,7 +8,7 @@ public class CosmicLog
     public required string Category { get; set; }
     public required DateTime CreatedAt { get; set; }
     public int? CosmicEventId { get; set; }
-    public CosmicEvent? CosmicEvent { get; set; }   // EF Core will perform SQL JOIN when .Include() is used later
     public string? SourceUrl { get; set; }
     public List<CosmicTag> Tags { get; set; } = []; // Many-to-Many relation with cosmic Tag
+    public CosmicEvent? CosmicEvent { get; set; }   // EF Core will perform SQL JOIN when .Include() is used later
 }

@@ -1,5 +1,5 @@
 ﻿using CosmicObserverAPI.Data;
-using CosmicObserverAPI.DTOs.Tags;
+using CosmicObserverAPI.DTOs.CosmicTag;
 using CosmicObserverAPI.Interfaces;
 using CosmicObserverAPI.Models;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +20,6 @@ public class CosmicTagService : ICosmicTagService
         var db = _cosmicDbContext.CosmicTags;
 
         var tags = await db
-            .AsNoTracking()
             .Select(ct => new TagResponse()
             {
                 Id = ct.Id,
@@ -77,8 +76,7 @@ public class CosmicTagService : ICosmicTagService
     {
         var db = _cosmicDbContext.CosmicTags;
 
-        var tag = await db
-            .FirstOrDefaultAsync(ct => ct.Id == id);
+        var tag = await db.FirstOrDefaultAsync(ct => ct.Id == id);
 
         if (tag is null)
         {

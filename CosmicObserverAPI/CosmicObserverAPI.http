@@ -1,17 +1,14 @@
 @CosmicObserverAPI_HostAddress = http://localhost:5247
 
 GET {{CosmicObserverAPI_HostAddress}}/api/Apod
-Accept: application/json
 
 ###
 
 GET {{CosmicObserverAPI_HostAddress}}/api/Apod?date=2012-12-24
-Accept: application/json
 
 ###
 
 GET {{CosmicObserverAPI_HostAddress}}/api/Apod/range?startDate=2000-01-01&endDate=2000-01-03
-Accept: application/json
 
 ###
 
@@ -25,20 +22,17 @@ Content-Type: application/json
 ###
 
 GET {{CosmicObserverAPI_HostAddress}}/api/Tags
-Accept: application/json
 
 ###
 
 GET {{CosmicObserverAPI_HostAddress}}/api/Tags/3
-Accept: application/json
 
 ###
 
 PUT {{CosmicObserverAPI_HostAddress}}/api/Tags/4
-Content-Type: application/json
 
 {
-  "Name": "asteroid"
+  "Name": "black hole"
 }
 
 ###
@@ -46,3 +40,46 @@ Content-Type: application/json
 DELETE {{CosmicObserverAPI_HostAddress}}/api/Tags/3
 
 ###
+
+POST {{CosmicObserverAPI_HostAddress}}/api/Logs
+Content-Type: application/json
+
+{
+    "Title": "test2",
+    "Content": "qwertyuioo",
+    "Category": "Book",
+    "CosmicEventId": "1",
+    "Tags": ["moon", "star"]
+}
+
+###
+
+GET {{CosmicObserverAPI_HostAddress}}/api/Logs
+
+###
+
+GET {{CosmicObserverAPI_HostAddress}}/api/Logs/2
+
+###
+
+GET {{CosmicObserverAPI_HostAddress}}/api/Logs/Categories?category=Event&category=Book
+
+###
+
+GET {{CosmicObserverAPI_HostAddress}}/api/Logs/Tags?tag=black%20hole
+
+###
+
+PUT {{CosmicObserverAPI_HostAddress}}/api/Logs/1
+Content-Type: application/json
+{
+  "Title": "The very first log after an update",
+  "Content": "The 1st log new content",
+  "Category": "Video",
+  "CosmicEventId": "2",
+  "Tags": ["moon", "black hole"]
+}
+
+###
+
+DELETE {{CosmicObserverAPI_HostAddress}}/api/Logs/2
