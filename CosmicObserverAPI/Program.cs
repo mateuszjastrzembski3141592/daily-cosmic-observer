@@ -30,6 +30,8 @@ builder.Services.AddScoped<ICosmicEventService, CosmicEventService>();
 
 builder.Services.AddScoped<ICosmicTagService, CosmicTagService>();
 
+builder.Services.AddScoped<ICosmicLogService, CosmicLogService>();
+
 var app = builder.Build();
 
 /*-----------------------------*/
