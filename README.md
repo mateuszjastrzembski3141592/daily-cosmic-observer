@@ -62,3 +62,4 @@ The database schema was designed using the `dbdiagram.io`. The schema consists o
 - Create APOD gallery endpoint (get all apods from db and not from APOD API).
 - Implement cache-aside pattern for APODs.
 - Implement tag data sanitization pipeline (lowercase / hyphenation).
+- Refactor DTO mappings to use compiled delegates.
