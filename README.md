@@ -63,3 +63,5 @@ The database schema was designed using the `dbdiagram.io`. The schema consists o
 - Implement cache-aside pattern for APODs.
 - Implement tag data sanitization pipeline (lowercase / hyphenation).
 - Refactor DTO mappings to use compiled delegates.
+- XML documentation
+- custom result pattern and global exception handling

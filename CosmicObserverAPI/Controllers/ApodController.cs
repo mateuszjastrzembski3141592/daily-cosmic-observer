@@ -22,7 +22,7 @@ public class ApodController : ControllerBase
     {
         var apodResult = await _apodService.GetApodAsync(date);
 
-        if (apodResult == null)
+        if (apodResult is null)
         {
             return NotFound();
         }
