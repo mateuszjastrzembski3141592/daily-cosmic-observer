@@ -1,5 +1,7 @@
 ﻿using CosmicObserverAPI.Data;
 using CosmicObserverAPI.DTOs.Apod;
+using CosmicObserverAPI.DTOs.CosmicEvent;
+using CosmicObserverAPI.Extensions;
 using CosmicObserverAPI.Interfaces;
 using CosmicObserverAPI.Models;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +15,53 @@ public class CosmicEventService : ICosmicEventService
     public CosmicEventService(CosmicDbContext cosmicDbContext)
     {
         _cosmicDbContext = cosmicDbContext;
+    }
+
+    public async Task<IEnumerable<EventResponse>> GetAllEventsAsync()
+    {
+        var db = _cosmicDbContext.CosmicEvents;
+
+        var cEvents = await db
+            .Select(EventMappingExtensions.ToEventResponseExpression)
+            .ToListAsync();
+
+        return cEvents;
+    }
+
+    public async Task<EventResponse?> GetEventByIdAsync(int id)
+    {
+        var db = _cosmicDbContext.CosmicEvents;
+
+        var cEvent = await db
+            .Where(ce => ce.Id == id)
+            .Select(EventMappingExtensions.ToEventResponseExpression)
+            .FirstOrDefaultAsync();
+
+        return cEvent;
+    }
+
+    public async Task<EventResponse?> GetEventByDateAsync(DateOnly date)
+    {
+        var db = _cosmicDbContext.CosmicEvents;
+
+        var cEvent = await db
+            .Where(ce => ce.Date == date)
+            .Select(EventMappingExtensions.ToEventResponseExpression)
+            .FirstOrDefaultAsync();
+
+        return cEvent;
+    }
+
+    public async Task<IEnumerable<EventResponse>> GetEventsRangeAsync(DateOnly startDate, DateOnly endDate)
+    {
+        var db = _cosmicDbContext.CosmicEvents;
+
+        var cEvent = await db
+            .Where(ce => ce.Date >= startDate && ce.Date <= endDate)
+            .Select(EventMappingExtensions.ToEventResponseExpression)
+            .ToListAsync();
+
+        return cEvent;
     }
 
     public async Task<bool> SaveApodAsync(NasaApodResponse apodResponse)
@@ -64,6 +113,23 @@ public class CosmicEventService : ICosmicEventService
             });
 
         await db.AddRangeAsync(filteredApods);
+        await _cosmicDbContext.SaveChangesAsync();
+
+        return true;
+    }
+
+    public async Task<bool> DeleteEventAsync(int id)
+    {
+        var db = _cosmicDbContext.CosmicEvents;
+
+        var cEvent = await db.FindAsync(id);
+
+        if (cEvent is null)
+        {
+            return false;
+        }
+
+        db.Remove(cEvent);
         await _cosmicDbContext.SaveChangesAsync();
 
         return true;

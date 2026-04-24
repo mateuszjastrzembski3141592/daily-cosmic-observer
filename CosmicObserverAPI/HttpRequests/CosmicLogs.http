@@ -1,0 +1,46 @@
+@CosmicObserverAPI_HostAddress = https://localhost:7047
+
+POST {{CosmicObserverAPI_HostAddress}}/api/Logs
+Content-Type: application/json
+
+{
+    "Title": "test2",
+    "Content": "qwertyuioo",
+    "Category": "Book",
+    "CosmicEventId": "1",
+    "Tags": ["moon", "star"]
+}
+
+###
+
+GET {{CosmicObserverAPI_HostAddress}}/api/Logs
+
+###
+
+GET {{CosmicObserverAPI_HostAddress}}/api/Logs/1
+
+###
+
+GET {{CosmicObserverAPI_HostAddress}}/api/Logs/Categories?category=Event&category=Book
+
+###
+
+GET {{CosmicObserverAPI_HostAddress}}/api/Logs/Tags?tag=black%20hole
+
+###
+
+PUT {{CosmicObserverAPI_HostAddress}}/api/Logs/1
+Content-Type: application/json
+{
+  "Title": "The very first log after an update",
+  "Content": "The 1st log new content",
+  "Category": "Video",
+  "CosmicEventId": "2",
+  "Tags": ["moon", "black hole"]
+}
+
+###
+
+DELETE {{CosmicObserverAPI_HostAddress}}/api/Logs/2
+
+###

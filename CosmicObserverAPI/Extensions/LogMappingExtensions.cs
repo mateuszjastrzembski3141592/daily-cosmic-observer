@@ -7,18 +7,18 @@ namespace CosmicObserverAPI.Extensions;
 
 public static class LogMappingExtensions
 {
-    public static LogResponse ToLogResponse(this CosmicLog log)
+    public static LogResponse ToLogResponse(this CosmicLog cosmicLog)
     {
         return new LogResponse()
         {
-            Id = log.Id,
-            Title = log.Title,
-            Content = log.Content,
-            Category = log.Category,
-            CreatedAt = log.CreatedAt,
-            CosmicEventId = log.CosmicEventId,
-            SourceUrl = log.SourceUrl,
-            Tags = [.. log.Tags
+            Id = cosmicLog.Id,
+            Title = cosmicLog.Title,
+            Content = cosmicLog.Content,
+            Category = cosmicLog.Category,
+            CreatedAt = cosmicLog.CreatedAt,
+            CosmicEventId = cosmicLog.CosmicEventId,
+            SourceUrl = cosmicLog.SourceUrl,
+            Tags = [.. cosmicLog.Tags
                 .Select(ct => new TagResponse()
                 {
                     Id = ct.Id,

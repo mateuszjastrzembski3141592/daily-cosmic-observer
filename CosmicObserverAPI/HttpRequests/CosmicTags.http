@@ -1,0 +1,31 @@
+@CosmicObserverAPI_HostAddress = https://localhost:7047
+
+POST {{CosmicObserverAPI_HostAddress}}/api/Tags
+Content-Type: application/json
+
+{
+  "Name": "star"
+}
+
+###
+
+GET {{CosmicObserverAPI_HostAddress}}/api/Tags
+
+###
+
+GET {{CosmicObserverAPI_HostAddress}}/api/Tags/3
+
+###
+
+PUT {{CosmicObserverAPI_HostAddress}}/api/Tags/6
+Content-Type: application/json
+
+{
+  "Name": "moonlight"
+}
+
+###
+
+DELETE {{CosmicObserverAPI_HostAddress}}/api/Tags/5
+
+###
