@@ -14,7 +14,7 @@ The development of the DCO project is divided into two distinct phases:
 - **Language:** C# 14
 - **Database:** SQLite
 - **ORM:** Entity Framework Core (Code-First)
-- **Architecture:** Clean N-Tier REST API
+- **Architecture:** Clean N-Layer REST API
 - **Design Tools:** dbdiagram.io (Database Schema Architecture)
 
 ## Progress & Milestones
@@ -61,8 +61,8 @@ The database schema was designed using the `dbdiagram.io`. The schema consists o
 - Created `EventMappingExtensions` static class for translating DTO mappings into SQL queries.
 
 ## TODOs
-- Implement tag data sanitization pipeline (lowercase / hyphenation).
 - Implement cache-aside pattern for APODs.
+- Implement tag data sanitization pipeline (lowercase / hyphenation).
 - custom result pattern and global exception handling
 - XML documentation
 - Fully test the backend pipeline using Swagger / `http` files before initiating Phase 2.

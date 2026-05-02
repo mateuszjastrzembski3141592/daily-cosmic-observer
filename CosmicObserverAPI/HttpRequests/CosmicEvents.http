@@ -8,14 +8,15 @@ GET {{CosmicObserverAPI_HostAddress}}/api/Events/11
 
 ###
 
-GET {{CosmicObserverAPI_HostAddress}}/api/Events/date?date=2026-04-24
+GET {{CosmicObserverAPI_HostAddress}}/api/Events/date?date=2026-05-01
 
 ###
 
-GET {{CosmicObserverAPI_HostAddress}}/api/Events/dates?startDate=2000-01-01&endDate=2000-01-07
+GET {{CosmicObserverAPI_HostAddress}}/api/Events/dates?startDate=2026-04-09&endDate=2026-04-13
 
 ###
 
 DELETE {{CosmicObserverAPI_HostAddress}}/api/Events/11
 
 ###
+

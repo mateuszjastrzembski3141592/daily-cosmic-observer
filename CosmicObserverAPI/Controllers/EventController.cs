@@ -9,21 +9,18 @@ namespace CosmicObserverAPI.Controllers;
 public class EventController : ControllerBase
 {
     private readonly ICosmicEventService _eventService;
+    private readonly INasaApodService _apodService;
 
-    public EventController(ICosmicEventService eventService)
+    public EventController(ICosmicEventService eventService, INasaApodService apodService)
     {
         _eventService = eventService;
+        _apodService = apodService;
     }
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<EventResponse>>> GetAllEvents()
     {
         var eventResults = await _eventService.GetAllEventsAsync();
-
-        if (!eventResults.Any())
-        {
-            return NotFound();
-        }
 
         return Ok(eventResults);
     }
@@ -48,7 +45,18 @@ public class EventController : ControllerBase
 
         if (eventResult is null)
         {
-            return NotFound();
+            var apodResult = await _apodService.GetApodAsync(date);
+
+            if (apodResult is null)
+            {
+                return NotFound();
+            }
+
+            await _eventService.SaveApodAsync(apodResult);
+
+            eventResult = await _eventService.GetEventByDateAsync(date);
+
+            return Ok(eventResult);
         }
 
         return Ok(eventResult);
@@ -59,9 +67,15 @@ public class EventController : ControllerBase
     {
         var eventResults = await _eventService.GetEventsRangeAsync(startDate, endDate);
 
-        if (!eventResults.Any())
+        if (eventResults.Count() < endDate.DayNumber - startDate.DayNumber + 1)
         {
-            return NotFound();
+            var apodResults = await _apodService.GetApodRangeAsync(startDate, endDate);
+
+            await _eventService.SaveApodRangeAsync(apodResults);
+
+            eventResults = await _eventService.GetEventsRangeAsync(startDate, endDate);
+
+            return Ok(eventResults);
         }
 
         return Ok(eventResults);
