@@ -10,6 +10,6 @@ public class NasaApodResponse
     public required string Description { get; set; }
     [JsonPropertyName("date")]
     public required DateOnly Date { get; set; }
-    [JsonPropertyName("hdurl")]
-    public required string ImageUrl { get; set; } // HD version
+    [JsonPropertyName("url")]
+    public required string ImageUrl { get; set; } // Note: can contain video url instead of image url
 }

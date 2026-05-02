@@ -37,12 +37,6 @@ public class ApodController : ControllerBase
     {
         var apodResults = await _apodService.GetApodRangeAsync(startDate, endDate);
 
-        // TODO: remove the if
-        if (!apodResults.Any())
-        {
-            return NotFound();
-        }
-
         await _eventService.SaveApodRangeAsync(apodResults);
 
         return Ok(apodResults);
