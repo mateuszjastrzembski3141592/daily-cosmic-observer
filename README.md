@@ -52,16 +52,17 @@ The database schema was designed using the `dbdiagram.io`. The schema consists o
 - Implemented `CreateLog` and `LogResponse` DTOs for `CosmicLogs` payloads.
 - Built `CosmicLogService` to handle database interactions, including logic to synchronize **Many-to-Many** tag relationship without duplicates.
 - Established `LogController` with all CRUD endpoints (`GET`, `POST`, `PUT`, `DELETE`) including `[FromQuery]` endpoints for multi-category and tag filtering.
-- Created `LogMappingExtensions` method to adhere to the **DRY** principle, translating DTO mappings directly into SQL queries.
+- Created `LogMappingExtensions` static class to adhere to the **DRY** principle, translating DTO mappings directly into SQL queries.
 
-## Upcoming
-- Update `CosmicEventService` with get and delete endpoints, create `EventController`.
-- Fully test the backend pipeline using Swagger / `http` files before initiating Phase 2.
+### 7. Data Engine & Endpoints (`CosmicEvents`)
+- Implemented `EventResponse` DTO for `CosmicEvents` payloads.
+- Updated `CosmicEventService` with asynchronous tasks for getting and deleting events.
+- Established `EventController` with CRUD endpoints (`GET`, `DELETE`) including endpoints for specific date and range dates event filtering.
+- Created `EventMappingExtensions` static class for translating DTO mappings into SQL queries.
 
-## Draft TODOs
-- Create APOD gallery endpoint (get all apods from db and not from APOD API).
-- Implement cache-aside pattern for APODs.
+## TODOs
 - Implement tag data sanitization pipeline (lowercase / hyphenation).
-- Refactor DTO mappings to use compiled delegates.
-- XML documentation
+- Implement cache-aside pattern for APODs.
 - custom result pattern and global exception handling
+- XML documentation
+- Fully test the backend pipeline using Swagger / `http` files before initiating Phase 2.
