@@ -60,9 +60,15 @@ The database schema was designed using the `dbdiagram.io`. The schema consists o
 - Established `EventController` with CRUD endpoints (`GET`, `DELETE`) including endpoints for specific date and range dates event filtering.
 - Created `EventMappingExtensions` static class for translating DTO mappings into SQL queries.
 
+### 8. Centralization of Cosmic Events Routing
+- Updated `EventController` to act as the single entry point for frontend `CosmicEvent` requests, injecting `INasaApodService` to coordinate directly between the local database and the external **APOD API**.
+- Implemented routing logic that checks the database first: if a specific date or fragments of a date range are missing, the controller automatically triggers a background fetch from NASA and saves the missing entries.
+- Updated `NasaApodResponse` DTO to prevent deserialization crashes when NASA returns embedded video links (`.mp4`) instead of a standard image URL.
+
 ## TODOs
 - Implement cache-aside pattern for APODs.
 - Implement tag data sanitization pipeline (lowercase / hyphenation).
-- custom result pattern and global exception handling
-- XML documentation
+- Implement custom result pattern and global exception handling.
+- XML documentation.
+- Refactor `CosmicEvent.ImageUrl` property to `MediaUrl` (including EF Core Migration).
 - Fully test the backend pipeline using Swagger / `http` files before initiating Phase 2.
