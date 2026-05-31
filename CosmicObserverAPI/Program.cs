@@ -13,7 +13,10 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 // Register data context and configure it to SQLite
 builder.Services.AddDbContext<CosmicDbContext>(options => options.UseSqlite(connectionString));
 
-// Add services to the container.
+// Add Cache in-memory
+builder.Services.AddMemoryCache();
+
+// Add services to the container
 builder.Services.AddControllers();
 
 builder.Services.AddOpenApi();
