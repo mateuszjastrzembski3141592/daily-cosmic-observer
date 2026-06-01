@@ -65,8 +65,12 @@ The database schema was designed using the `dbdiagram.io`. The schema consists o
 - Implemented routing logic that checks the database first: if a specific date or fragments of a date range are missing, the controller automatically triggers a background fetch from NASA and saves the missing entries.
 - Updated `NasaApodResponse` DTO to prevent deserialization crashes when NASA returns embedded video links (`.mp4`) instead of a standard image URL.
 
+### 9. Cache-Aside Pattern Integration (`CosmicEvents`)
+- **Memory Allocation:** Registered .NET's built-in `IMemoryCache` to reduce database load and external API calls.
+- **Service Integration:** Implemented the Cache-Aside pattern across `CosmicEventService` **read tasks** (`GetEventByIdAsync`, `GetEventByDateAsync`, and `GetEventsRangeAsync`).
+- **Memory Protection:** Configured `SlidingExpiration` (30 minutes) and `AbsoluteExpirationRelativeToNow` (24 hours) policies, while implementing conditional **Zero-Time** to prevent caching incomplete date ranges or null database queries.
+
 ## TODOs
-- Implement cache-aside pattern for APODs.
 - Implement tag data sanitization pipeline (lowercase / hyphenation).
 - Implement custom result pattern and global exception handling.
 - XML documentation.
