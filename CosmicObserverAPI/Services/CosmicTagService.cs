@@ -1,5 +1,6 @@
 ﻿using CosmicObserverAPI.Data;
 using CosmicObserverAPI.DTOs.CosmicTag;
+using CosmicObserverAPI.Extensions;
 using CosmicObserverAPI.Interfaces;
 using CosmicObserverAPI.Models;
 using Microsoft.EntityFrameworkCore;
@@ -50,14 +51,16 @@ public class CosmicTagService : ICosmicTagService
     {
         var db = _cosmicDbContext.CosmicTags;
 
-        if (await db.AnyAsync(ct => ct.Name == newTag.Name))
+        string newTagName = newTag.Name.ToSanitizedString();
+
+        if (await db.AnyAsync(ct => ct.Name == newTagName))
         {
             return null;
         }
 
         var cosmicTag = new CosmicTag()
         {
-            Name = newTag.Name
+            Name = newTagName
         };
 
         db.Add(cosmicTag);
@@ -76,6 +79,8 @@ public class CosmicTagService : ICosmicTagService
     {
         var db = _cosmicDbContext.CosmicTags;
 
+        string newTagName = newTag.Name.ToSanitizedString();
+
         var tag = await db.FirstOrDefaultAsync(ct => ct.Id == id);
 
         if (tag is null)
@@ -83,12 +88,12 @@ public class CosmicTagService : ICosmicTagService
             return null;
         }
 
-        if (await db.AnyAsync(ct => ct.Name == newTag.Name && ct.Id != id))
+        if (await db.AnyAsync(ct => ct.Name == newTagName && ct.Id != id))
         {
             return null;
         }
 
-        tag.Name = newTag.Name;
+        tag.Name = newTagName;
         await _cosmicDbContext.SaveChangesAsync();
 
         return new TagResponse{ Id = tag.Id, Name = tag.Name };
