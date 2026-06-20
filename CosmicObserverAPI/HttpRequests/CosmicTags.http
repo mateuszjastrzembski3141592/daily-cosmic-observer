@@ -21,7 +21,7 @@ PUT {{CosmicObserverAPI_HostAddress}}/api/Tags/6
 Content-Type: application/json
 
 {
-  "Name": "moonlight"
+  "Name": "!@moon     light-"
 }
 
 ###

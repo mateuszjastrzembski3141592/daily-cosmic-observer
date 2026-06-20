@@ -70,8 +70,13 @@ The database schema was designed using the `dbdiagram.io`. The schema consists o
 - **Service Integration:** Implemented the Cache-Aside pattern across `CosmicEventService` **read tasks** (`GetEventByIdAsync`, `GetEventByDateAsync`, and `GetEventsRangeAsync`).
 - **Memory Protection:** Configured `SlidingExpiration` (30 minutes) and `AbsoluteExpirationRelativeToNow` (24 hours) policies, while implementing conditional **Zero-Time** to prevent caching incomplete date ranges or null database queries.
 
+### 10. Tag Data Sanitization Pipeline (`CosmicTags`)
+- Created `StringSanitizationExtensions` class for string manipulation.
+- Implemented `ToSanitizedString` static method with culture-sensitive lowercasing, whitespace trimming, and LINQ pipeline to filter out special characters.
+- Integrated the sanitization inside the `CreateTagAsync` and `UpdateTagAsync`.
+
+
 ## TODOs
-- Implement tag data sanitization pipeline (lowercase / hyphenation).
 - Implement custom result pattern and global exception handling.
 - XML documentation.
 - Refactor `CosmicEvent.ImageUrl` property to `MediaUrl` (including EF Core Migration).
