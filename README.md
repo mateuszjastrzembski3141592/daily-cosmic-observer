@@ -57,8 +57,10 @@ The database schema was designed using the `dbdiagram.io`. The schema consists o
 ### 7. Data Engine & Endpoints (`CosmicEvents`)
 - Implemented `EventResponse` DTO for `CosmicEvents` payloads.
 - Updated `CosmicEventService` with asynchronous tasks for getting and deleting events.
-- Established `EventController` with CRUD endpoints (`GET`, `DELETE`) including endpoints for specific date and range dates event filtering.
-- Created `EventMappingExtensions` static class for translating DTO mappings into SQL queries.
+- Established `EventController` with CRUD endpoints (`GET`, `DELETE`) including endpoints for specific date and date range event filtering.
+- Created `EventMappingExtensions` static class for **Cosmic Events** data mapping:
+	- Implemented `ToEventResponseExpression` static expression for Entity -> DTO mapping.
+	- Implemented `ToEventEntity` static extension method for DTO -> Entity mapping.
 
 ### 8. Centralization of Cosmic Events Routing
 - Updated `EventController` to act as the single entry point for frontend `CosmicEvent` requests, injecting `INasaApodService` to coordinate directly between the local database and the external **APOD API**.

@@ -1,6 +1,8 @@
-﻿using CosmicObserverAPI.DTOs.CosmicEvent;
+﻿using CosmicObserverAPI.DTOs.Apod;
+using CosmicObserverAPI.DTOs.CosmicEvent;
 using CosmicObserverAPI.Models;
 using System.Linq.Expressions;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CosmicObserverAPI.Extensions;
 
@@ -16,4 +18,16 @@ public static class EventMappingExtensions
             ImageUrl = ce.ImageUrl,
             SourceUrl = ce.SourceUrl
         };
+
+    public static CosmicEvent ToEventEntity(this NasaApodResponse apodResponse)
+    {
+        return new CosmicEvent()
+        {
+            Title = apodResponse.Title,
+            Description = apodResponse.Description,
+            Date = apodResponse.Date,
+            ImageUrl = apodResponse.ImageUrl,
+            SourceUrl = $"https://apod.nasa.gov/apod/ap{apodResponse.Date:yyMMdd}.html"
+        };
+    }
 }

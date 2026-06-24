@@ -147,14 +147,7 @@ public class CosmicEventService : ICosmicEventService
             return false;
         }
 
-        var cosmicEvent = new CosmicEvent()
-        {
-            Title = apodResponse.Title,
-            Description = apodResponse.Description,
-            Date = apodResponse.Date,
-            ImageUrl = apodResponse.ImageUrl,
-            SourceUrl = $"https://apod.nasa.gov/apod/ap{apodResponse.Date:yyMMdd}.html"
-        };
+        var cosmicEvent = apodResponse.ToEventEntity();
 
         db.Add(cosmicEvent);
         await _cosmicDbContext.SaveChangesAsync();
@@ -177,14 +170,7 @@ public class CosmicEventService : ICosmicEventService
 
         var filteredApods = apodResponses
             .Where(nar => !existingDates.Contains(nar.Date))
-            .Select(nar => new CosmicEvent()
-            {
-                Title = nar.Title,
-                Description = nar.Description,
-                Date = nar.Date,
-                ImageUrl = nar.ImageUrl,
-                SourceUrl = $"https://apod.nasa.gov/apod/ap{nar.Date:yyMMdd}.html"
-            });
+            .Select(nar => nar.ToEventEntity());
 
         await db.AddRangeAsync(filteredApods);
         await _cosmicDbContext.SaveChangesAsync();
