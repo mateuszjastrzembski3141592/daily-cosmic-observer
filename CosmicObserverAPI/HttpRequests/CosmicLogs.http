@@ -4,8 +4,8 @@ POST {{CosmicObserverAPI_HostAddress}}/api/Logs
 Content-Type: application/json
 
 {
-    "Title": "test2",
-    "Content": "qwertyuioo",
+    "Title": "test3",
+    "Content": "qwe",
     "Category": "Book",
     "CosmicEventId": "1",
     "Tags": ["moon", "star"]
@@ -17,7 +17,7 @@ GET {{CosmicObserverAPI_HostAddress}}/api/Logs
 
 ###
 
-GET {{CosmicObserverAPI_HostAddress}}/api/Logs/1
+GET {{CosmicObserverAPI_HostAddress}}/api/Logs/4
 
 ###
 
