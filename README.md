@@ -52,7 +52,11 @@ The database schema was designed using the `dbdiagram.io`. The schema consists o
 - Implemented `CreateLog` and `LogResponse` DTOs for `CosmicLogs` payloads.
 - Built `CosmicLogService` to handle database interactions, including logic to synchronize **Many-to-Many** tag relationship without duplicates.
 - Established `LogController` with all CRUD endpoints (`GET`, `POST`, `PUT`, `DELETE`) including `[FromQuery]` endpoints for multi-category and tag filtering.
-- Created `LogMappingExtensions` static class to adhere to the **DRY** principle, translating DTO mappings directly into SQL queries.
+- Created `LogMappingExtensions` static class as a central hub for **Cosmic Logs data** mapping to adhere to the **DRY** principle:
+	- Implemented `ToLogResponse` static extension method for in-memory Entity -> DTO mapping.
+	- Implemented `ToLogResponseExpression` static expression to allow Entity Framework to translate Entity -> DTO queries into SQL.
+	- Implemented `ToLogEntity` static extension method for in-memory DTO -> Entity instantiation.
+	- Implemented `UpdateLogEntity` static extension method for in-place entity mutation.
 
 ### 7. Data Engine & Endpoints (`CosmicEvents`)
 - Implemented `EventResponse` DTO for `CosmicEvents` payloads.
