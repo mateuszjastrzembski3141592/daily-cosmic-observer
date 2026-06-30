@@ -78,16 +78,9 @@ public class CosmicLogService : ICosmicLogService
             return null;
         }
 
-        var cosmicLog = new CosmicLog()
-        {
-            Title = newLog.Title,
-            Content = newLog.Content,
-            Category = newLog.Category,
-            CreatedAt = DateTime.Now,
-            CosmicEventId = newLog.CosmicEventId,
-            SourceUrl = newLog.SourceUrl,
-            Tags = await GetOrCreateTagsAsync(newLog.Tags)
-        };
+        var tags = await GetOrCreateTagsAsync(newLog.Tags);
+
+        var cosmicLog = newLog.ToLogEntity(tags);
 
         db.Add(cosmicLog);
         await _cosmicDbContext.SaveChangesAsync();
@@ -113,12 +106,9 @@ public class CosmicLogService : ICosmicLogService
             return null;
         }
 
-        cosmicLog.Title = newLog.Title;
-        cosmicLog.Content = newLog.Content;
-        cosmicLog.Category = newLog.Category;
-        cosmicLog.CosmicEventId = newLog.CosmicEventId;
-        cosmicLog.SourceUrl = newLog.SourceUrl;
-        cosmicLog.Tags = await GetOrCreateTagsAsync(newLog.Tags);
+        var tags = await GetOrCreateTagsAsync(newLog.Tags);
+
+        cosmicLog.UpdateLogEntity(newLog, tags);
 
         await _cosmicDbContext.SaveChangesAsync();
 

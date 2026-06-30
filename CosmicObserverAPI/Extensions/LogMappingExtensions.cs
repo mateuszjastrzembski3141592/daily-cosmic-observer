@@ -45,4 +45,28 @@ public static class LogMappingExtensions
                 })
                 .ToList()
         };
+
+    public static CosmicLog ToLogEntity(this CreateLog newLog, List<CosmicTag> tags)
+    {
+        return new CosmicLog()
+        {
+            Title = newLog.Title,
+            Content = newLog.Content,
+            Category = newLog.Category,
+            CreatedAt = DateTime.Now,
+            CosmicEventId = newLog.CosmicEventId,
+            SourceUrl = newLog.SourceUrl,
+            Tags = tags
+        };
+    }
+
+    public static void UpdateLogEntity(this CosmicLog cosmicLog, CreateLog newLog, List<CosmicTag> tags)
+    {
+        cosmicLog.Title = newLog.Title;
+        cosmicLog.Content = newLog.Content;
+        cosmicLog.Category = newLog.Category;
+        cosmicLog.CosmicEventId = newLog.CosmicEventId;
+        cosmicLog.SourceUrl = newLog.SourceUrl;
+        cosmicLog.Tags = tags;
+    }
 }
