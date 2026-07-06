@@ -15,7 +15,7 @@ public static class EventMappingExtensions
             Title = ce.Title,
             Description = ce.Description,
             Date = ce.Date,
-            ImageUrl = ce.ImageUrl,
+            MediaUrl = ce.MediaUrl,
             SourceUrl = ce.SourceUrl
         };
 
@@ -26,7 +26,7 @@ public static class EventMappingExtensions
             Title = apodResponse.Title,
             Description = apodResponse.Description,
             Date = apodResponse.Date,
-            ImageUrl = apodResponse.ImageUrl,
+            MediaUrl = apodResponse.MediaUrl,
             SourceUrl = $"https://apod.nasa.gov/apod/ap{apodResponse.Date:yyMMdd}.html"
         };
     }
