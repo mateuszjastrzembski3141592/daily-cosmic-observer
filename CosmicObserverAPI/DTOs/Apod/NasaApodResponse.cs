@@ -11,5 +11,5 @@ public class NasaApodResponse
     [JsonPropertyName("date")]
     public required DateOnly Date { get; set; }
     [JsonPropertyName("url")]
-    public required string ImageUrl { get; set; } // Note: can contain video url instead of image url
+    public required string MediaUrl { get; set; } // Note: can contain video url instead of image url
 }

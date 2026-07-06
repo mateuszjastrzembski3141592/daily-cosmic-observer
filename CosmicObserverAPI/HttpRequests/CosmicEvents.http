@@ -8,7 +8,7 @@ GET {{CosmicObserverAPI_HostAddress}}/api/Events/1
 
 ###
 
-GET {{CosmicObserverAPI_HostAddress}}/api/Events/date?date=2026-05-01
+GET {{CosmicObserverAPI_HostAddress}}/api/Events/date?date=2026-07-05
 
 ###
 
