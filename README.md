@@ -29,6 +29,7 @@ The database schema was designed using the `dbdiagram.io`. The schema consists o
 - **Domain Models:** designed and implemented pure data containers (`CosmicEvent`, `CosmicLog`, `CosmicTag`) with strict `required` modifiers for null-safety.
 - **Database Schema:** translated the initial `dbdiagram` schema into a local SQLite database using EF Core Code-First migrations.
 - **Relational Mapping:** configured one-to-many and many-to-many relationships (including auto-generated join tables for `Logs` and `Tags`).
+- **Schema Update:** renamed a `CosmicEvent` property from `ImageUrl` to `MediaUrl` using `RenameColumn` in an EF Core migration.
 
 ### 3. External API Integration (NASA APOD)
 - **Secure HTTP Pipeline:** wired up a typed `HttpClient` utilizing Dependency Injection to communicate with NASA's servers.
@@ -85,5 +86,4 @@ The database schema was designed using the `dbdiagram.io`. The schema consists o
 ## TODOs
 - Implement custom result pattern and global exception handling.
 - XML documentation.
-- Refactor `CosmicEvent.ImageUrl` property to `MediaUrl` (including EF Core Migration).
 - Fully test the backend pipeline using Swagger / `http` files before initiating Phase 2.
