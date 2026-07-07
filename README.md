@@ -6,7 +6,7 @@ Work in progress (Phase 1)
 
 ## Project Roadmap
 The development of the DCO project is divided into two distinct phases:
-- **Phase 1: RESTful Backend API:** building a robust `CosmicObserver API` with N-Tier architecture using .NET 10 to handle external API integrations, data management and business logic,
+- **Phase 1: RESTful Backend API:** building a robust `CosmicObserver API` with N-Layer architecture using .NET 10 to handle external API integrations, data management and business logic,
 - **Phase 2: Frontend Web Client:** developing the UI to consume the `CosmicObserver API`, visualize the data (including cosmic events images), and provide a journal-like experience for the user.
 
 ## Backend Tech Stack (Phase 1)
@@ -84,6 +84,8 @@ The database schema was designed using the `dbdiagram.io`. The schema consists o
 
 
 ## TODOs
-- Implement custom result pattern and global exception handling.
+- Implement custom result pattern.
+- Implement global exception handling.
+- Implement HTTP call retries (Polly).
 - XML documentation.
-- Fully test the backend pipeline using Swagger / `http` files before initiating Phase 2.
+- Fully test the backend pipeline using `http` files before initiating Phase 2.
