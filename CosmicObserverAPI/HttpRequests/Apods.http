@@ -4,10 +4,16 @@ GET {{CosmicObserverAPI_HostAddress}}/api/Apod
 
 ###
 
-GET {{CosmicObserverAPI_HostAddress}}/api/Apod?date=2026-04-09
+GET {{CosmicObserverAPI_HostAddress}}/api/Apod?date=2026-07-22
+
+###
+
+GET {{CosmicObserverAPI_HostAddress}}/api/Apod?date=1900-01-01
 
 ###
 
 GET {{CosmicObserverAPI_HostAddress}}/api/Apod/range?startDate=2000-01-01&endDate=2000-01-03
 
 ###
+
+GET {{CosmicObserverAPI_HostAddress}}/api/Apod/range?startDate=2000-01-01&endDate=3000-01-01

@@ -52,7 +52,7 @@ public class EventController : ControllerBase
                 return NotFound();
             }
 
-            await _eventService.SaveApodAsync(apodResult);
+            await _eventService.SaveApodAsync(apodResult.Value);
 
             eventResult = await _eventService.GetEventByDateAsync(date);
 
@@ -71,7 +71,7 @@ public class EventController : ControllerBase
         {
             var apodResults = await _apodService.GetApodRangeAsync(startDate, endDate);
 
-            await _eventService.SaveApodRangeAsync(apodResults);
+            await _eventService.SaveApodRangeAsync(apodResults.Value);
 
             eventResults = await _eventService.GetEventsRangeAsync(startDate, endDate);
 

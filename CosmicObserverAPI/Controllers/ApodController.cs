@@ -1,4 +1,5 @@
 ﻿using CosmicObserverAPI.DTOs.Apod;
+using CosmicObserverAPI.Extensions;
 using CosmicObserverAPI.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,12 +10,10 @@ namespace CosmicObserverAPI.Controllers;
 public class ApodController : ControllerBase
 {
     private readonly INasaApodService _apodService;
-    private readonly ICosmicEventService _eventService;
 
-    public ApodController(INasaApodService apodService, ICosmicEventService eventService)
+    public ApodController(INasaApodService apodService)
     {
         _apodService = apodService;
-        _eventService = eventService;
     }
 
     [HttpGet]
@@ -22,14 +21,10 @@ public class ApodController : ControllerBase
     {
         var apodResult = await _apodService.GetApodAsync(date);
 
-        if (apodResult is null)
-        {
-            return NotFound();
-        }
-
-        await _eventService.SaveApodAsync(apodResult);
-
-        return Ok(apodResult);
+        return apodResult.Map<ActionResult<NasaApodResponse>>(
+            onSuccess: value => Ok(value),
+            onFailure: error => this.ToErrorCode(error)
+        );
     }
 
     [HttpGet("range")]
@@ -37,8 +32,9 @@ public class ApodController : ControllerBase
     {
         var apodResults = await _apodService.GetApodRangeAsync(startDate, endDate);
 
-        await _eventService.SaveApodRangeAsync(apodResults);
-
-        return Ok(apodResults);
+        return apodResults.Map<ActionResult<IEnumerable<NasaApodResponse>>>(
+            onSuccess: value => Ok(value),
+            onFailure: error => this.ToErrorCode(error)
+        );
     }
 }
